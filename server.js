@@ -46,6 +46,10 @@ app.post('/api/mail', function(req,res) {
 console.log(req.body.content)
 })
 
+app.get('/api/all', function(req, res) {
+	res.send('hello')
+})
+
 let port = process.env.PORT || 3000;
 
 app.listen(port, function(){

@@ -1,21 +1,15 @@
 require('dotenv').config();
-var cors = require('cors');
 //app.use(express.bodyParser());
 let bodyParser = require('body-parser')
 
 let express = require('express');
 let app = express();
+var cors = require('cors');
+app.use(cors());
 const router = express.Router();
 let projectRouter = require('./config/routes.js')
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-  next();
-});
 app.use(bodyParser.json());
-app.use(cors());
 
 
 
@@ -34,6 +28,9 @@ const msg = {
 
 app.post('/api/mail', function(req,res) {
 
+
+	console.log("hitting the mail post route")
+
 	let msgTwo = {
   to: req.body.email,
   from: 'AndrewBroestl@gmail.com',
@@ -44,6 +41,7 @@ app.post('/api/mail', function(req,res) {
 
 	sgMail.send(msgTwo);
 console.log(req.body.content)
+	res.sendStatus(200)
 })
 
 app.get('/api/all', function(req, res) {

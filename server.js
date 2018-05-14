@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 // https://github.com/sendgrid/sendgrid-nodejs
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+console.log(process.env.SENDGRID_API_KEY);
 const msg = {
   to: 'AndrewBroestl@gmail.com',
   from: 'AndrewBroestl@gmail.com',

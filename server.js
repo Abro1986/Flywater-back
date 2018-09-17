@@ -7,6 +7,9 @@ let router     = express.Router();
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.urlencoded({
+	extended: false
+}));
 
 
 
@@ -14,24 +17,31 @@ app.use(bodyParser.json());
 // https://github.com/sendgrid/sendgrid-nodejs
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-console.log(process.env.SENDGRID_API_KEY);
+
 
 
 app.post('/api/mail', function(req,res) {
 
 
-	console.log("hitting the mail post route")
-
+	console.log(req.body)
 	let msgTwo = {
   to: 'AndrewBroestl@gmail.com',
   from: req.body.email,
-  subject: 'New email!',
-  text: req.body.content,
-  html: `<strong>${req.body.content}</strong>`,
+  subject: req.body.subject,
+  text: req.body.text,
+  html: `<strong>${req.body.text}</strong>`,
 };
 
-	sgMail.send(msgTwo);
-	res.sendStatus(200)
+	sgMail.send(msgTwo).then(() => {
+		console.log('promise resolution')
+		res.send('Thank You')
+	})
+	.catch((err) => {
+		console.log(err)
+		res.send(err.message + ' email not sent');
+	});
+//	res.sendStatus(200)
+//	res.send('Thank You')
 })
 
 app.get('/api/all', function(req, res) {
